@@ -9,6 +9,8 @@ import ReadingSettings from './components/ReadingSettings';
 import Layout from './components/Layout';
 import { Book, Vocabulary, Word, DictionaryEntry } from './components/types';
 
+const DEFAULT_LANGUAGE_COLOR = { light: { background: '#CCCCCC', text: '#333333' }, dark: { background: '#666666', text: '#FFFFFF' } };
+
 const LANGUAGE_COLORS: { [key: string]: { light: { background: string; text: string }; dark: { background: string; text: string } } } = {
   en: { light: { background: '#E8F5E9', text: '#2E7D32' }, dark: { background: '#388E3C', text: '#FFFFFF' } }, // Green
   es: { light: { background: '#E3F2FD', text: '#1976D2' }, dark: { background: '#1565C0', text: '#FFFFFF' } }, // Blue
