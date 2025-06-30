@@ -10,7 +10,11 @@ import Layout from './components/Layout';
 import { Book, Vocabulary, Word, DictionaryEntry } from './components/types';
 
 const App = () => {
-  const [book, setBook] = useState<Book | null>(null);
+  const [books, setBooks] = useState<Book[]>(() => {
+    const savedBooks = localStorage.getItem('books');
+    return savedBooks ? JSON.parse(savedBooks) : [];
+  });
+  const [currentBookId, setCurrentBookId] = useState<string | null>(null);
   const [vocabulary, setVocabulary] = useState<Vocabulary>(() => {
     const savedVocabulary = localStorage.getItem('vocabulary');
     return savedVocabulary ? JSON.parse(savedVocabulary) : {};
@@ -60,8 +64,13 @@ const App = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    localStorage.setItem('books', JSON.stringify(books));
+  }, [books]);
+
   const handleBookUpload = (uploadedBook: Book) => {
-    setBook(uploadedBook);
+    setBooks((prev) => [...prev, uploadedBook]);
+    setCurrentBookId(uploadedBook.id);
   };
 
   const handleWordSelect = (wordText: string) => {
@@ -147,17 +156,20 @@ const App = () => {
           </header>
         }
         mainContent={
-          !book ? (
-            <BookLibrary onBookUpload={handleBookUpload} />
+          {currentBookId === null ? (
+            <BookLibrary
+              books={books}
+              onBookUpload={handleBookUpload}
+              onBookSelect={setCurrentBookId}
+            />
           ) : (
             <ReadingView
-              book={book}
+              book={books.find((b) => b.id === currentBookId) || null}
               onWordUpdate={handleWordSelect}
               fontSize={fontSize}
               vocabulary={vocabulary[selectedLanguage] || []}
-              selectedLanguage={selectedLanguage}
             />
-          )
+          )}
         }
         sidebar={
           <>

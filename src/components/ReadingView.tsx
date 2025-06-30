@@ -3,13 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Book, Word } from './types';
 
 interface Props {
-  book: Book;
+  book: Book | null;
   onWordUpdate: (wordText: string) => void;
   fontSize: number;
   vocabulary: Word[];
 }
 
 const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary }) => {
+  if (!book) {
+    return <div>Please select a book to read.</div>;
+  }
   const [currentPage, setCurrentPage] = useState(0);
   const linesPerPage = 30; // Number of lines to display per page
 
