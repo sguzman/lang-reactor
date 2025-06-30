@@ -156,7 +156,7 @@ const App = () => {
           </header>
         }
         mainContent={
-          {currentBookId === null ? (
+          currentBookId === null ? (
             <BookLibrary
               books={books}
               onBookUpload={handleBookUpload}
@@ -169,7 +169,7 @@ const App = () => {
               fontSize={fontSize}
               vocabulary={vocabulary[selectedLanguage] || []}
             />
-          )}
+          )
         }
         sidebar={
           <>
