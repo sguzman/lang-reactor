@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Book, Word } from './types';
 
 interface Props {
@@ -7,19 +7,14 @@ interface Props {
   onWordUpdate: (wordText: string) => void;
   fontSize: number;
   vocabulary: Word[];
+  currentPage: number;
+  linesPerPage: number;
 }
 
-const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary }) => {
+const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary, currentPage, linesPerPage }) => {
   if (!book) {
     return <div>Please select a book to read.</div>;
   }
-  const [currentPage, setCurrentPage] = useState(0);
-  const linesPerPage = 30; // Number of lines to display per page
-
-  useEffect(() => {
-    // Reset to first page when a new book is loaded
-    setCurrentPage(0);
-  }, [book]);
 
   const handleWordClick = (word: string) => {
     const cleanedWord = word.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
@@ -28,7 +23,6 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
   };
 
   const lines = book.content.split('\n');
-  const totalPages = Math.ceil(lines.length / linesPerPage);
   const startIndex = currentPage * linesPerPage;
   const endIndex = startIndex + linesPerPage;
   const currentLines = lines.slice(startIndex, endIndex);
@@ -56,13 +50,9 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
           </p>
         ))}
       </div>
-      <div className="pagination-controls">
-        <button onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))} disabled={currentPage === 0}>Previous</button>
-        <span>Page {currentPage + 1} of {totalPages}</span>
-        <button onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))} disabled={currentPage === totalPages - 1}>Next</button>
-      </div>
     </div>
   );
 };
 
 export default ReadingView;
+

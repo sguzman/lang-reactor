@@ -22,6 +22,13 @@ const App = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [wordLists, setWordLists] = useState<{[key: string]: Word[]}>({});
+  const [currentPage, setCurrentPage] = useState(0);
+  const linesPerPage = 30; // Number of lines to display per page
+
+  useEffect(() => {
+    // Reset to first page when a new book is loaded
+    setCurrentPage(0);
+  }, [currentBookId]);
 
   useEffect(() => {
     const loadWordList = async () => {
@@ -77,31 +84,32 @@ const App = () => {
     const cleanedWordText = wordText.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
     if (!cleanedWordText) return;
 
-    const wordFromList = wordLists[selectedLanguage]?.find(w => w.text === cleanedWordText);
-
-    const word: Word = {
-      text: cleanedWordText,
-      status: 'learning',
-      tier: wordFromList?.tier || 0,
-      definition: wordFromList?.definition || 'No definition found.',
-    };
-
-    setSelectedWord(word);
-    // Also add/update it in the vocabulary list immediately
     setVocabulary((prev) => {
-        const langVocab = prev[selectedLanguage] || [];
-        const existingWord = langVocab.find((w) => w.text === word.text);
-        if (existingWord) {
-            // If word exists, update its definition but keep status
-            return {
-                ...prev,
-                [selectedLanguage]: langVocab.map((w) =>
-                    w.text === word.text ? { ...w, definition: word.definition, tier: word.tier } : w,
-                ),
-            };
+      const langVocab = prev[selectedLanguage] || [];
+      const existingWordIndex = langVocab.findIndex((w) => w.text === cleanedWordText);
+
+      if (existingWordIndex !== -1) {
+        const updatedWord = { ...langVocab[existingWordIndex] };
+        if (updatedWord.status === 'learning') {
+          updatedWord.status = 'known';
+        } else if (updatedWord.status === 'known') {
+          // If already known, do nothing
+          return prev;
         }
-        // If word is new, add it as 'learning'
-        return { ...prev, [selectedLanguage]: [...langVocab, word] };
+        const newLangVocab = [...langVocab];
+        newLangVocab[existingWordIndex] = updatedWord;
+        return { ...prev, [selectedLanguage]: newLangVocab };
+      } else {
+        // Add new word as 'learning'
+        const wordFromList = wordLists[selectedLanguage]?.find(w => w.text === cleanedWordText);
+        const newWord: Word = {
+          text: cleanedWordText,
+          status: 'learning',
+          tier: wordFromList?.tier || 0,
+          definition: wordFromList?.definition || 'No definition found.',
+        };
+        return { ...prev, [selectedLanguage]: [...langVocab, newWord] };
+      }
     });
   };
 
@@ -146,6 +154,26 @@ const App = () => {
     setTheme(newTheme);
   };
 
+  const handleExportVocabulary = () => {
+    const dataStr = JSON.stringify(vocabulary, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vocabulary.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDeleteAllData = () => {
+    if (window.confirm('Are you sure you want to delete all data? This action cannot be undone.')) {
+      localStorage.clear();
+      window.location.reload();
+    }
+  };
+
   return (
     <div className={`App ${theme}`}>
       <Layout
@@ -168,6 +196,8 @@ const App = () => {
               onWordUpdate={handleWordSelect}
               fontSize={fontSize}
               vocabulary={vocabulary[selectedLanguage] || []}
+              currentPage={currentPage}
+              linesPerPage={linesPerPage}
             />
           )
         }
@@ -185,12 +215,14 @@ const App = () => {
             />
           </>
         }
+        onExportVocabulary={handleExportVocabulary}
+        onDeleteAllData={handleDeleteAllData}
+        currentPage={currentPage}
+        totalPages={Math.ceil((books.find((b) => b.id === currentBookId)?.content || '').split('\n').length / linesPerPage)}
+        onPreviousPage={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+        onNextPage={() => setCurrentPage(prev => Math.min(Math.ceil((books.find((b) => b.id === currentBookId)?.content || '').split('\n').length / linesPerPage) - 1, prev + 1))}
       />
-      <WordDefinitionModal
-        word={selectedWord}
-        onClose={handleCloseModal}
-        onMarkAsKnown={handleMarkAsKnown}
-      />
+      
     </div>
   );
 };
