@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Word } from './types';
+import { Word, DictionaryEntry, Phonetic, Meaning, Definition } from './types';
 
 interface Props {
   word: Word | null;
@@ -9,21 +8,21 @@ interface Props {
 }
 
 const WordDefinitionModal: React.FC<Props> = ({ word, onClose, onMarkAsKnown }) => {
-  if (!word || !word.definition) return null;
+  if (!word || !word.definition || word.definition.length === 0) return null;
 
-  const definitionData = Array.isArray(word.definition) ? word.definition[0] : word.definition;
+  const definitionData: DictionaryEntry = Array.isArray(word.definition) ? word.definition[0] : word.definition;
 
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
         <h2>{word.text}</h2>
-        {definitionData.phonetics && definitionData.phonetics.map((phonetic: any, index: number) => (
+        {definitionData.phonetics && definitionData.phonetics.map((phonetic: Phonetic, index: number) => (
           <p key={index}>{phonetic.text}</p>
         ))}
-        {definitionData.meanings && definitionData.meanings.map((meaning: any, index: number) => (
+        {definitionData.meanings && definitionData.meanings.map((meaning: Meaning, index: number) => (
           <div key={index}>
             <h3>{meaning.partOfSpeech}</h3>
-            {meaning.definitions.map((def: any, defIndex: number) => (
+            {meaning.definitions && meaning.definitions.map((def: Definition, defIndex: number) => (
               <p key={defIndex}>- {def.definition}</p>
             ))}
           </div>

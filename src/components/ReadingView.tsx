@@ -28,7 +28,7 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
       onWordUpdate({ text: cleanedWord, status: 'learning', definition: data });
     } catch (error) {
       console.error("Failed to fetch definition:", error);
-      onWordUpdate({ text: cleanedWord, status: 'learning', definition: 'Could not fetch definition.' });
+      onWordUpdate({ text: cleanedWord, status: 'learning', definition: [] });
     } finally {
       setLoading(false);
     }
