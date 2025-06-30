@@ -1,8 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .App {
   text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+input[type="file"], input[type="range"], select {
+  padding: 8px;
+  margin: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+label {
+  margin-right: 5px;
 }
 
 .layout-container {
@@ -15,6 +56,19 @@
   background-color: #282c34;
   padding: 20px;
   color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.layout-header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.layout-header .pagination-controls {
+  margin-top: 0;
 }
 
 .layout-main {
@@ -28,6 +82,7 @@
   text-align: left;
   max-width: 800px;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
 .layout-sidebar {
@@ -35,6 +90,7 @@
   padding: 20px;
   background-color: #f0f0f0;
   text-align: left;
+  border-left: 1px solid #eee;
 }
 
 .App-header {
@@ -51,10 +107,12 @@
 .word {
   cursor: pointer;
   padding: 2px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
 }
 
 .word:hover {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
 }
 
 .modal-backdrop {
@@ -63,21 +121,39 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  text-align: left;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  margin-top: 15px;
 }
 
 .App.dark {
   background-color: #282c34;
-  color: white;
+  color: #e0e0e0;
 }
 
 .App.dark .layout-header {
@@ -86,23 +162,26 @@
 
 .App.dark .layout-sidebar {
   background-color: #333;
+  border-left-color: #555;
 }
 
 .App.dark .modal-content {
-  background-color: #333;
-  color: white;
+  background-color: #444;
+  color: #e0e0e0;
 }
 
 .App.dark .word:hover {
-  background-color: #555;
+  background-color: #666;
 }
 
 .known-word {
   background-color: #d4edda; /* Light green for known words */
+  color: #155724;
 }
 
 .learning-word {
   background-color: #fff3cd; /* Light yellow for learning words */
+  color: #856404;
 }
 
 .App.dark .known-word {
@@ -140,4 +219,67 @@
 .pagination-controls span {
   margin: 0 10px;
   font-weight: bold;
+}
+
+.reading-settings div, .vocabulary-list div {
+  margin-bottom: 10px;
+}
+
+.reading-settings label, .vocabulary-list label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.vocabulary-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.vocabulary-list li {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.App.dark .vocabulary-list li {
+  background-color: #555;
+  border-color: #777;
+}
+
+.vocabulary-list li button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 0.8em;
+}
+
+.book-library ul {
+  list-style: none;
+  padding: 0;
+}
+
+.book-library li {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.App.dark .book-library li {
+  background-color: #555;
+  border-color: #777;
+}
+
+.book-library li button {
+  margin-left: 15px;
+  padding: 6px 12px;
+  font-size: 0.9em;
 }
