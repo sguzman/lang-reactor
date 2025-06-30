@@ -5,10 +5,11 @@ import { Vocabulary, Word } from './types';
 interface Props {
   vocabulary: Vocabulary;
   onRemoveWord: (word: Word) => void;
-  languageColor: string;
+  languageColor: { light: { background: string; text: string }; dark: { background: string; text: string } };
+  theme: string;
 }
 
-const VocabularyList: React.FC<Props> = ({ vocabulary, onRemoveWord, languageColor }) => {
+const VocabularyList: React.FC<Props> = ({ vocabulary, onRemoveWord, languageColor, theme }) => {
   const [filter, setFilter] = useState<'all' | 'known' | 'learning'>('all');
   const [tierFilter, setTierFilter] = useState<number | 'all'>('all');
 
@@ -39,7 +40,7 @@ const VocabularyList: React.FC<Props> = ({ vocabulary, onRemoveWord, languageCol
       </div>
       <ul>
         {filteredVocabulary.map((word, index) => (
-          <li key={index} style={{ backgroundColor: languageColor, color: 'white' }}>
+          <li key={index} style={{ backgroundColor: languageColor[theme].background, color: languageColor[theme].text }}>
             <strong>{word.text}</strong> ({word.status}, Tier: {word.tier}): {word.definition}
             <button onClick={() => onRemoveWord(word)}>Remove</button>
           </li>

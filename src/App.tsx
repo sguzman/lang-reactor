@@ -9,68 +9,68 @@ import ReadingSettings from './components/ReadingSettings';
 import Layout from './components/Layout';
 import { Book, Vocabulary, Word, DictionaryEntry } from './components/types';
 
-const LANGUAGE_COLORS: { [key: string]: string } = {
-  en: '#4CAF50', // Green
-  es: '#2196F3', // Blue
-  fr: '#F44336', // Red
-  de: '#FFC107', // Amber
-  it: '#9C27B0', // Purple
-  pt: '#FF9800', // Orange
-  ru: '#607D8B', // Blue Grey
-  zh: '#795548', // Brown
-  ja: '#E91E63', // Pink
-  ko: '#00BCD4', // Cyan
-  af: '#8BC34A', // Light Green
-  ar: '#CDDC39', // Lime
-  bg: '#FFEB3B', // Yellow
-  bn: '#03A9F4', // Light Blue
-  br: '#8D6E63', // Brown
-  bs: '#673AB7', // Deep Purple
-  ca: '#FF5722', // Deep Orange
-  cs: '#795548', // Brown
-  da: '#607D8B', // Blue Grey
-  el: '#4CAF50', // Green
-  eo: '#2196F3', // Blue
-  et: '#F44336', // Red
-  eu: '#FFC107', // Amber
-  fa: '#9C27B0', // Purple
-  fi: '#FF9800', // Orange
-  gl: '#607D8B', // Blue Grey
-  he: '#795548', // Brown
-  hi: '#E91E63', // Pink
-  hr: '#00BCD4', // Cyan
-  hu: '#8BC34A', // Light Green
-  hy: '#CDDC39', // Lime
-  id: '#FFEB3B', // Yellow
-  is: '#03A9F4', // Light Blue
-  kk: '#8D6E63', // Brown
-  lt: '#673AB7', // Deep Purple
-  lv: '#FF5722', // Deep Orange
-  mk: '#795548', // Brown
-  ml: '#607D8B', // Blue Grey
-  ms: '#4CAF50', // Green
-  nl: '#2196F3', // Blue
-  no: '#F44336', // Red
-  pl: '#FFC107', // Amber
-  ro: '#9C27B0', // Purple
-  si: '#FF9800', // Orange
-  sk: '#607D8B', // Blue Grey
-  sl: '#795548', // Brown
-  sq: '#E91E63', // Pink
-  sr: '#00BCD4', // Cyan
-  sv: '#8BC34A', // Light Green
-  ta: '#CDDC39', // Lime
-  te: '#FFEB3B', // Yellow
-  th: '#03A9F4', // Light Blue
-  tl: '#8D6E63', // Brown
-  tr: '#673AB7', // Deep Purple
-  uk: '#FF5722', // Deep Orange
-  ur: '#795548', // Brown
-  vi: '#607D8B', // Blue Grey
-  ze_en: '#4CAF50', // Green (Simplified English)
-  ze_zh: '#2196F3', // Blue (Simplified Chinese)
-  zh_cn: '#F44336', // Red (Chinese China)
-  zh_tw: '#FFC107', // Amber (Chinese Taiwan)
+const LANGUAGE_COLORS: { [key: string]: { light: { background: string; text: string }; dark: { background: string; text: string } } } = {
+  en: { light: { background: '#E8F5E9', text: '#2E7D32' }, dark: { background: '#388E3C', text: '#FFFFFF' } }, // Green
+  es: { light: { background: '#E3F2FD', text: '#1976D2' }, dark: { background: '#1565C0', text: '#FFFFFF' } }, // Blue
+  fr: { light: { background: '#FFEBEE', text: '#D32F2F' }, dark: { background: '#C62828', text: '#FFFFFF' } }, // Red
+  de: { light: { background: '#FFF8E1', text: '#FFB300' }, dark: { background: '#FFA000', text: '#000000' } }, // Amber
+  it: { light: { background: '#F3E5F5', text: '#7B1FA2' }, dark: { background: '#6A1B9A', text: '#FFFFFF' } }, // Purple
+  pt: { light: { background: '#FFF3E0', text: '#F57C00' }, dark: { background: '#EF6C00', text: '#FFFFFF' } }, // Orange
+  ru: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  zh: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  ja: { light: { background: '#FCE4EC', text: '#C2185B' }, dark: { background: '#AD1457', text: '#FFFFFF' } }, // Pink
+  ko: { light: { background: '#E0F7FA', text: '#00838F' }, dark: { background: '#006064', text: '#FFFFFF' } }, // Cyan
+  af: { light: { background: '#F1F8E9', text: '#558B2F' }, dark: { background: '#33691E', text: '#FFFFFF' } }, // Light Green
+  ar: { light: { background: '#F9FBE7', text: '#9E9D24' }, dark: { background: '#827717', text: '#000000' } }, // Lime
+  bg: { light: { background: '#FFFDE7', text: '#FBC02D' }, dark: { background: '#F9A825', text: '#000000' } }, // Yellow
+  bn: { light: { background: '#E1F5FE', text: '#0288D1' }, dark: { background: '#01579B', text: '#FFFFFF' } }, // Light Blue
+  br: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  bs: { light: { background: '#EDE7F6', text: '#512DA8' }, dark: { background: '#4527A0', text: '#FFFFFF' } }, // Deep Purple
+  ca: { light: { background: '#FBE9E7', text: '#E64A19' }, dark: { background: '#D84315', text: '#FFFFFF' } }, // Deep Orange
+  cs: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  da: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  el: { light: { background: '#E8F5E9', text: '#2E7D32' }, dark: { background: '#388E3C', text: '#FFFFFF' } }, // Green
+  eo: { light: { background: '#E3F2FD', text: '#1976D2' }, dark: { background: '#1565C0', text: '#FFFFFF' } }, // Blue
+  et: { light: { background: '#FFEBEE', text: '#D32F2F' }, dark: { background: '#C62828', text: '#FFFFFF' } }, // Red
+  eu: { light: { background: '#FFF8E1', text: '#FFB300' }, dark: { background: '#FFA000', text: '#000000' } }, // Amber
+  fa: { light: { background: '#F3E5F5', text: '#7B1FA2' }, dark: { background: '#6A1B9A', text: '#FFFFFF' } }, // Purple
+  fi: { light: { background: '#FFF3E0', text: '#F57C00' }, dark: { background: '#EF6C00', text: '#FFFFFF' } }, // Orange
+  gl: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  he: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  hi: { light: { background: '#FCE4EC', text: '#C2185B' }, dark: { background: '#AD1457', text: '#FFFFFF' } }, // Pink
+  hr: { light: { background: '#E0F7FA', text: '#00838F' }, dark: { background: '#006064', text: '#FFFFFF' } }, // Cyan
+  hu: { light: { background: '#F1F8E9', text: '#558B2F' }, dark: { background: '#33691E', text: '#FFFFFF' } }, // Light Green
+  hy: { light: { background: '#F9FBE7', text: '#9E9D24' }, dark: { background: '#827717', text: '#000000' } }, // Lime
+  id: { light: { background: '#FFFDE7', text: '#FBC02D' }, dark: { background: '#F9A825', text: '#000000' } }, // Yellow
+  is: { light: { background: '#E1F5FE', text: '#0288D1' }, dark: { background: '#01579B', text: '#FFFFFF' } }, // Light Blue
+  kk: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  lt: { light: { background: '#EDE7F6', text: '#512DA8' }, dark: { background: '#4527A0', text: '#FFFFFF' } }, // Deep Purple
+  lv: { light: { background: '#FBE9E7', text: '#E64A19' }, dark: { background: '#D84315', text: '#FFFFFF' } }, // Deep Orange
+  mk: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  ml: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  ms: { light: { background: '#E8F5E9', text: '#2E7D32' }, dark: { background: '#388E3C', text: '#FFFFFF' } }, // Green
+  nl: { light: { background: '#E3F2FD', text: '#1976D2' }, dark: { background: '#1565C0', text: '#FFFFFF' } }, // Blue
+  no: { light: { background: '#FFEBEE', text: '#D32F2F' }, dark: { background: '#C62828', text: '#FFFFFF' } }, // Red
+  pl: { light: { background: '#FFF8E1', text: '#FFB300' }, dark: { background: '#FFA000', text: '#000000' } }, // Amber
+  ro: { light: { background: '#F3E5F5', text: '#7B1FA2' }, dark: { background: '#6A1B9A', text: '#FFFFFF' } }, // Purple
+  si: { light: { background: '#FFF3E0', text: '#F57C00' }, dark: { background: '#EF6C00', text: '#FFFFFF' } }, // Orange
+  sk: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  sl: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  sq: { light: { background: '#FCE4EC', text: '#C2185B' }, dark: { background: '#AD1457', text: '#FFFFFF' } }, // Pink
+  sr: { light: { background: '#E0F7FA', text: '#00838F' }, dark: { background: '#006064', text: '#FFFFFF' } }, // Cyan
+  sv: { light: { background: '#F1F8E9', text: '#558B2F' }, dark: { background: '#33691E', text: '#FFFFFF' } }, // Light Green
+  ta: { light: { background: '#F9FBE7', text: '#9E9D24' }, dark: { background: '#827717', text: '#000000' } }, // Lime
+  te: { light: { background: '#FFFDE7', text: '#FBC02D' }, dark: { background: '#F9A825', text: '#000000' } }, // Yellow
+  th: { light: { background: '#E1F5FE', text: '#0288D1' }, dark: { background: '#01579B', text: '#FFFFFF' } }, // Light Blue
+  tl: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  tr: { light: { background: '#EDE7F6', text: '#512DA8' }, dark: { background: '#4527A0', text: '#FFFFFF' } }, // Deep Purple
+  uk: { light: { background: '#FBE9E7', text: '#E64A19' }, dark: { background: '#D84315', text: '#FFFFFF' } }, // Deep Orange
+  ur: { light: { background: '#EFEBE9', text: '#5D4037' }, dark: { background: '#4E342E', text: '#FFFFFF' } }, // Brown
+  vi: { light: { background: '#ECEFF1', text: '#455A64' }, dark: { background: '#37474F', text: '#FFFFFF' } }, // Blue Grey
+  ze_en: { light: { background: '#E8F5E9', text: '#2E7D32' }, dark: { background: '#388E3C', text: '#FFFFFF' } }, // Green (Simplified English)
+  ze_zh: { light: { background: '#E3F2FD', text: '#1976D2' }, dark: { background: '#1565C0', text: '#FFFFFF' } }, // Blue (Simplified Chinese)
+  zh_cn: { light: { background: '#FFEBEE', text: '#D32F2F' }, dark: { background: '#C62828', text: '#FFFFFF' } }, // Red (Chinese China)
+  zh_tw: { light: { background: '#FFF8E1', text: '#FFB300' }, dark: { background: '#FFA000', text: '#000000' } }, // Amber (Chinese Taiwan)
 };
 
 const App = () => {
