@@ -1,18 +1,51 @@
 .App {
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.App-header {
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-header {
   background-color: #282c34;
   padding: 20px;
   color: white;
 }
 
-.reading-content {
-  text-align: left;
+.layout-main {
+  display: flex;
+  flex: 1;
+}
+
+.layout-content {
+  flex: 3;
   padding: 20px;
+  text-align: left;
   max-width: 800px;
   margin: 0 auto;
+}
+
+.layout-sidebar {
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f0f0;
+  text-align: left;
+}
+
+.App-header {
+  /* Removed as it's now part of layout-header */
+}
+
+.reading-content {
+  /* Adjusted to fit within layout-content */
+  padding: 0;
+  max-width: none;
+  margin: 0;
 }
 
 .word {
@@ -47,8 +80,12 @@
   color: white;
 }
 
-.App.dark .App-header {
+.App.dark .layout-header {
   background-color: #1a1a1a;
+}
+
+.App.dark .layout-sidebar {
+  background-color: #333;
 }
 
 .App.dark .modal-content {

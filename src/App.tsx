@@ -6,6 +6,7 @@ import VocabularyList from './components/VocabularyList';
 import LanguageSelector from './components/LanguageSelector';
 import WordDefinitionModal from './components/WordDefinitionModal';
 import ReadingSettings from './components/ReadingSettings';
+import Layout from './components/Layout';
 import { Book, Vocabulary, Word } from './components/types';
 
 const App = () => {
@@ -104,38 +105,46 @@ const App = () => {
 
   return (
     <div className={`App ${theme}`}>
-      <header className="App-header">
-        <h1>Language Reactor</h1>
-        <LanguageSelector onLanguageChange={handleLanguageChange} />
-      </header>
-      <main>
-        <ReadingSettings
-          fontSize={fontSize}
-          theme={theme}
-          onFontSizeChange={handleFontSizeChange}
-          onThemeChange={handleThemeChange}
-        />
-        {!book ? (
-          <BookLibrary onBookUpload={handleBookUpload} />
-        ) : (
-          <ReadingView
-            book={book}
-            onWordUpdate={handleWordSelect}
-            fontSize={fontSize}
-            vocabulary={vocabulary[selectedLanguage] || []}
-            selectedLanguage={selectedLanguage}
-          />
-        )}
-        <VocabularyList
-          vocabulary={vocabulary[selectedLanguage] || []}
-          onRemoveWord={handleRemoveWord}
-        />
-        <WordDefinitionModal
-          word={selectedWord}
-          onClose={handleCloseModal}
-          onMarkAsKnown={handleMarkAsKnown}
-        />
-      </main>
+      <Layout
+        header={
+          <header className="App-header">
+            <h1>Language Reactor</h1>
+            <LanguageSelector onLanguageChange={handleLanguageChange} />
+          </header>
+        }
+        mainContent={
+          !book ? (
+            <BookLibrary onBookUpload={handleBookUpload} />
+          ) : (
+            <ReadingView
+              book={book}
+              onWordUpdate={handleWordSelect}
+              fontSize={fontSize}
+              vocabulary={vocabulary[selectedLanguage] || []}
+              selectedLanguage={selectedLanguage}
+            />
+          )
+        }
+        sidebar={
+          <>
+            <ReadingSettings
+              fontSize={fontSize}
+              theme={theme}
+              onFontSizeChange={handleFontSizeChange}
+              onThemeChange={handleThemeChange}
+            />
+            <VocabularyList
+              vocabulary={vocabulary[selectedLanguage] || []}
+              onRemoveWord={handleRemoveWord}
+            />
+          </>
+        }
+      />
+      <WordDefinitionModal
+        word={selectedWord}
+        onClose={handleCloseModal}
+        onMarkAsKnown={handleMarkAsKnown}
+      />
     </div>
   );
 };
