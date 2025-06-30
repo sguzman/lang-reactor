@@ -59,3 +59,21 @@
 .App.dark .word:hover {
   background-color: #555;
 }
+
+.known-word {
+  background-color: #d4edda; /* Light green for known words */
+}
+
+.learning-word {
+  background-color: #fff3cd; /* Light yellow for learning words */
+}
+
+.App.dark .known-word {
+  background-color: #28a745; /* Darker green for known words in dark mode */
+  color: #fff;
+}
+
+.App.dark .learning-word {
+  background-color: #ffc107; /* Darker yellow for learning words in dark mode */
+  color: #000;
+}

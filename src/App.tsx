@@ -118,7 +118,12 @@ const App = () => {
         {!book ? (
           <BookLibrary onBookUpload={handleBookUpload} />
         ) : (
-          <ReadingView book={book} onWordUpdate={handleWordSelect} fontSize={fontSize} />
+          <ReadingView
+            book={book}
+            onWordUpdate={handleWordSelect}
+            fontSize={fontSize}
+            vocabulary={vocabulary[selectedLanguage] || []}
+          />
         )}
         <VocabularyList
           vocabulary={vocabulary[selectedLanguage] || []}

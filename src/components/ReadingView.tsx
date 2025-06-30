@@ -6,9 +6,10 @@ interface Props {
   book: Book;
   onWordUpdate: (word: Word) => void;
   fontSize: number;
+  vocabulary: Word[];
 }
 
-const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize }) => {
+const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary }) => {
   const [loading, setLoading] = useState(false);
 
   const handleWordClick = async (word: string) => {
@@ -41,8 +42,12 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize }) => {
           if (/\s+/.test(word)) {
             return <span key={index}>{word}</span>;
           }
+          const cleanedWord = word.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
+          const vocabWord = vocabulary.find(w => w.text === cleanedWord);
+          const wordClass = vocabWord ? `word ${vocabWord.status}-word` : 'word';
+
           return (
-            <span key={index} onClick={() => handleWordClick(word)} className="word">
+            <span key={index} onClick={() => handleWordClick(word)} className={wordClass}>
               {word}
             </span>
           );
