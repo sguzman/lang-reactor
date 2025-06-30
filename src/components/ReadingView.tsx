@@ -9,9 +9,10 @@ interface Props {
   vocabulary: Word[];
   currentPage: number;
   linesPerPage: number;
+  languageColor: string;
 }
 
-const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary, currentPage, linesPerPage }) => {
+const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary, currentPage, linesPerPage, languageColor }) => {
   if (!book) {
     return <div>Please select a book to read.</div>;
   }
@@ -40,9 +41,10 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
               const cleanedWord = word.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
               const vocabWord = vocabulary.find(w => w.text === cleanedWord);
               const wordClass = vocabWord ? `word ${vocabWord.status}-word` : 'word';
+              const wordStyle = vocabWord ? { backgroundColor: languageColor, color: 'white' } : {};
 
               return (
-                <span key={wordIndex} onClick={() => handleWordClick(word)} className={wordClass}>
+                <span key={wordIndex} onClick={() => handleWordClick(word)} className={wordClass} style={wordStyle}>
                   {word}
                 </span>
               );

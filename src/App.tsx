@@ -9,6 +9,70 @@ import ReadingSettings from './components/ReadingSettings';
 import Layout from './components/Layout';
 import { Book, Vocabulary, Word, DictionaryEntry } from './components/types';
 
+const LANGUAGE_COLORS: { [key: string]: string } = {
+  en: '#4CAF50', // Green
+  es: '#2196F3', // Blue
+  fr: '#F44336', // Red
+  de: '#FFC107', // Amber
+  it: '#9C27B0', // Purple
+  pt: '#FF9800', // Orange
+  ru: '#607D8B', // Blue Grey
+  zh: '#795548', // Brown
+  ja: '#E91E63', // Pink
+  ko: '#00BCD4', // Cyan
+  af: '#8BC34A', // Light Green
+  ar: '#CDDC39', // Lime
+  bg: '#FFEB3B', // Yellow
+  bn: '#03A9F4', // Light Blue
+  br: '#8D6E63', // Brown
+  bs: '#673AB7', // Deep Purple
+  ca: '#FF5722', // Deep Orange
+  cs: '#795548', // Brown
+  da: '#607D8B', // Blue Grey
+  el: '#4CAF50', // Green
+  eo: '#2196F3', // Blue
+  et: '#F44336', // Red
+  eu: '#FFC107', // Amber
+  fa: '#9C27B0', // Purple
+  fi: '#FF9800', // Orange
+  gl: '#607D8B', // Blue Grey
+  he: '#795548', // Brown
+  hi: '#E91E63', // Pink
+  hr: '#00BCD4', // Cyan
+  hu: '#8BC34A', // Light Green
+  hy: '#CDDC39', // Lime
+  id: '#FFEB3B', // Yellow
+  is: '#03A9F4', // Light Blue
+  kk: '#8D6E63', // Brown
+  lt: '#673AB7', // Deep Purple
+  lv: '#FF5722', // Deep Orange
+  mk: '#795548', // Brown
+  ml: '#607D8B', // Blue Grey
+  ms: '#4CAF50', // Green
+  nl: '#2196F3', // Blue
+  no: '#F44336', // Red
+  pl: '#FFC107', // Amber
+  ro: '#9C27B0', // Purple
+  si: '#FF9800', // Orange
+  sk: '#607D8B', // Blue Grey
+  sl: '#795548', // Brown
+  sq: '#E91E63', // Pink
+  sr: '#00BCD4', // Cyan
+  sv: '#8BC34A', // Light Green
+  ta: '#CDDC39', // Lime
+  te: '#FFEB3B', // Yellow
+  th: '#03A9F4', // Light Blue
+  tl: '#8D6E63', // Brown
+  tr: '#673AB7', // Deep Purple
+  uk: '#FF5722', // Deep Orange
+  ur: '#795548', // Brown
+  vi: '#607D8B', // Blue Grey
+  ze_en: '#4CAF50', // Green (Simplified English)
+  ze_zh: '#2196F3', // Blue (Simplified Chinese)
+  zh_cn: '#F44336', // Red (Chinese China)
+  zh_tw: '#FFC107', // Amber (Chinese Taiwan)
+};
+
 const App = () => {
   const [books, setBooks] = useState<Book[]>(() => {
     const savedBooks = localStorage.getItem('books');
@@ -198,6 +262,7 @@ const App = () => {
               vocabulary={vocabulary[selectedLanguage] || []}
               currentPage={currentPage}
               linesPerPage={linesPerPage}
+              languageColor={LANGUAGE_COLORS[selectedLanguage]}
             />
           )
         }
@@ -212,6 +277,7 @@ const App = () => {
             <VocabularyList
               vocabulary={vocabulary[selectedLanguage] || []}
               onRemoveWord={handleRemoveWord}
+              languageColor={LANGUAGE_COLORS[selectedLanguage]}
             />
           </>
         }
