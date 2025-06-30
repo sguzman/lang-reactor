@@ -57,6 +57,18 @@ const App = () => {
     setSelectedWord(null); // Close modal after marking as known
   };
 
+  const handleRemoveWord = (wordToRemove: Word) => {
+    setVocabulary((prev) => {
+      const langVocab = prev[selectedLanguage] || [];
+      return {
+        ...prev,
+        [selectedLanguage]: langVocab.filter(
+          (w) => w.text !== wordToRemove.text
+        ),
+      };
+    });
+  };
+
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);
   };
@@ -78,7 +90,10 @@ const App = () => {
         ) : (
           <ReadingView book={book} onWordUpdate={handleWordSelect} />
         )}
-        <VocabularyList vocabulary={vocabulary[selectedLanguage] || []} />
+        <VocabularyList
+          vocabulary={vocabulary[selectedLanguage] || []}
+          onRemoveWord={handleRemoveWord}
+        />
         <WordDefinitionModal
           word={selectedWord}
           onClose={handleCloseModal}
