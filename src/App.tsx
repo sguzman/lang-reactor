@@ -7,7 +7,7 @@ import LanguageSelector from './components/LanguageSelector';
 import WordDefinitionModal from './components/WordDefinitionModal';
 import ReadingSettings from './components/ReadingSettings';
 import Layout from './components/Layout';
-import { Book, Vocabulary, Word } from './components/types';
+import { Book, Vocabulary, Word, DictionaryEntry } from './components/types';
 
 const App = () => {
   const [book, setBook] = useState<Book | null>(null);
@@ -17,6 +17,28 @@ const App = () => {
   });
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+  const [wordLists, setWordLists] = useState<{[key: string]: Word[]}>({});
+
+  useEffect(() => {
+    const loadWordList = async () => {
+      try {
+        const response = await fetch(`/words/${selectedLanguage}/${selectedLanguage}_full.txt`);
+        if (!response.ok) {
+          throw new Error(`Failed to load word list for ${selectedLanguage}`);
+        }
+        const text = await response.text();
+        const words: Word[] = text.split('\n').map((line) => {
+          const [text, tier, definition] = line.split('\t');
+          return { text, tier: Number(tier), status: 'learning', definition: definition || '' };
+        });
+        setWordLists((prev) => ({ ...prev, [selectedLanguage]: words }));
+      } catch (error) {
+        console.error(error);
+        setWordLists((prev) => ({ ...prev, [selectedLanguage]: [] }));
+      }
+    };
+    loadWordList();
+  }, [selectedLanguage]);
   const [fontSize, setFontSize] = useState<number>(() => {
     const savedFontSize = localStorage.getItem('fontSize');
     return savedFontSize ? Number(savedFontSize) : 16;
@@ -42,7 +64,19 @@ const App = () => {
     setBook(uploadedBook);
   };
 
-  const handleWordSelect = (word: Word) => {
+  const handleWordSelect = (wordText: string) => {
+    const cleanedWordText = wordText.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
+    if (!cleanedWordText) return;
+
+    const wordFromList = wordLists[selectedLanguage]?.find(w => w.text === cleanedWordText);
+
+    const word: Word = {
+      text: cleanedWordText,
+      status: 'learning',
+      tier: wordFromList?.tier || 0,
+      definition: wordFromList?.definition || 'No definition found.',
+    };
+
     setSelectedWord(word);
     // Also add/update it in the vocabulary list immediately
     setVocabulary((prev) => {
@@ -53,7 +87,7 @@ const App = () => {
             return {
                 ...prev,
                 [selectedLanguage]: langVocab.map((w) =>
-                    w.text === word.text ? { ...w, definition: word.definition } : w,
+                    w.text === word.text ? { ...w, definition: word.definition, tier: word.tier } : w,
                 ),
             };
         }

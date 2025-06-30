@@ -26,7 +26,7 @@ const VocabularyList: React.FC<Props> = ({ vocabulary, onRemoveWord }) => {
       <ul>
         {filteredVocabulary.map((word, index) => (
           <li key={index}>
-            <strong>{word.text}</strong> ({word.status}): {word.definition}
+            <strong>{word.text}</strong> ({word.status}, Tier: {word.tier}): {word.definition}
             <button onClick={() => onRemoveWord(word)}>Remove</button>
           </li>
         ))}
