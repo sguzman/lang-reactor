@@ -5,9 +5,10 @@ import { Book, Word } from './types';
 interface Props {
   book: Book;
   onWordUpdate: (word: Word) => void;
+  fontSize: number;
 }
 
-const ReadingView: React.FC<Props> = ({ book, onWordUpdate }) => {
+const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize }) => {
   const [loading, setLoading] = useState(false);
 
   const handleWordClick = async (word: string) => {
@@ -32,7 +33,7 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate }) => {
   };
 
   return (
-    <div>
+    <div style={{ fontSize: `${fontSize}px` }}>
       <h2>{book.title}</h2>
       {loading && <p>Loading definition...</p>}
       <div className="reading-content">

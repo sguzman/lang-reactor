@@ -41,3 +41,21 @@
   padding: 20px;
   border-radius: 5px;
 }
+
+.App.dark {
+  background-color: #282c34;
+  color: white;
+}
+
+.App.dark .App-header {
+  background-color: #1a1a1a;
+}
+
+.App.dark .modal-content {
+  background-color: #333;
+  color: white;
+}
+
+.App.dark .word:hover {
+  background-color: #555;
+}

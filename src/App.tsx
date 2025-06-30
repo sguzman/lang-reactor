@@ -5,6 +5,7 @@ import ReadingView from './components/ReadingView';
 import VocabularyList from './components/VocabularyList';
 import LanguageSelector from './components/LanguageSelector';
 import WordDefinitionModal from './components/WordDefinitionModal';
+import ReadingSettings from './components/ReadingSettings';
 import { Book, Vocabulary, Word } from './components/types';
 
 const App = () => {
@@ -15,10 +16,26 @@ const App = () => {
   });
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+  const [fontSize, setFontSize] = useState<number>(() => {
+    const savedFontSize = localStorage.getItem('fontSize');
+    return savedFontSize ? Number(savedFontSize) : 16;
+  });
+  const [theme, setTheme] = useState<string>(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme ? savedTheme : 'light';
+  });
 
   useEffect(() => {
     localStorage.setItem('vocabulary', JSON.stringify(vocabulary));
   }, [vocabulary]);
+
+  useEffect(() => {
+    localStorage.setItem('fontSize', String(fontSize));
+  }, [fontSize]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const handleBookUpload = (uploadedBook: Book) => {
     setBook(uploadedBook);
@@ -77,18 +94,31 @@ const App = () => {
     setSelectedWord(null);
   };
 
+  const handleFontSizeChange = (size: number) => {
+    setFontSize(size);
+  };
+
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+  };
 
   return (
-    <div className="App">
+    <div className={`App ${theme}`}>
       <header className="App-header">
         <h1>Language Reactor</h1>
         <LanguageSelector onLanguageChange={handleLanguageChange} />
       </header>
       <main>
+        <ReadingSettings
+          fontSize={fontSize}
+          theme={theme}
+          onFontSizeChange={handleFontSizeChange}
+          onThemeChange={handleThemeChange}
+        />
         {!book ? (
           <BookLibrary onBookUpload={handleBookUpload} />
         ) : (
-          <ReadingView book={book} onWordUpdate={handleWordSelect} />
+          <ReadingView book={book} onWordUpdate={handleWordSelect} fontSize={fontSize} />
         )}
         <VocabularyList
           vocabulary={vocabulary[selectedLanguage] || []}
