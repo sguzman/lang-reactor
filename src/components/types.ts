@@ -2,7 +2,7 @@
 export interface Word {
   text: string;
   status: 'known' | 'learning';
-  definition?: string;
+  definition?: any;
 }
 
 export interface Book {

@@ -7,9 +7,10 @@ interface Props {
   onWordUpdate: (word: Word) => void;
   fontSize: number;
   vocabulary: Word[];
+  selectedLanguage: string;
 }
 
-const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary }) => {
+const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary, selectedLanguage }) => {
   const [loading, setLoading] = useState(false);
 
   const handleWordClick = async (word: string) => {
@@ -18,13 +19,13 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
 
     setLoading(true);
     try {
-      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${cleanedWord}`);
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${selectedLanguage}/${cleanedWord}`);
       if (!response.ok) {
         throw new Error('Definition not found');
       }
       const data = await response.json();
-      const definition = data[0]?.meanings[0]?.definitions[0]?.definition || 'No definition found.';
-      onWordUpdate({ text: cleanedWord, status: 'learning', definition });
+      // Pass the full data object to onWordUpdate
+      onWordUpdate({ text: cleanedWord, status: 'learning', definition: data });
     } catch (error) {
       console.error("Failed to fetch definition:", error);
       onWordUpdate({ text: cleanedWord, status: 'learning', definition: 'Could not fetch definition.' });

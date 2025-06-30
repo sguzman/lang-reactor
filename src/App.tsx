@@ -123,6 +123,7 @@ const App = () => {
             onWordUpdate={handleWordSelect}
             fontSize={fontSize}
             vocabulary={vocabulary[selectedLanguage] || []}
+            selectedLanguage={selectedLanguage}
           />
         )}
         <VocabularyList
