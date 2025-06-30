@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import BookLibrary from './components/BookLibrary';
 import ReadingView from './components/ReadingView';
@@ -8,8 +8,15 @@ import { Book, Vocabulary, Word } from './components/types';
 
 const App = () => {
   const [book, setBook] = useState<Book | null>(null);
-  const [vocabulary, setVocabulary] = useState<Vocabulary>({});
+  const [vocabulary, setVocabulary] = useState<Vocabulary>(() => {
+    const savedVocabulary = localStorage.getItem('vocabulary');
+    return savedVocabulary ? JSON.parse(savedVocabulary) : {};
+  });
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+
+  useEffect(() => {
+    localStorage.setItem('vocabulary', JSON.stringify(vocabulary));
+  }, [vocabulary]);
 
   const handleBookUpload = (uploadedBook: Book) => {
     setBook(uploadedBook);
