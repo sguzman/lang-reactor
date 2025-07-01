@@ -32,17 +32,62 @@ const VocabularyList: React.FC<Props> = ({ vocabulary, onRemoveWord, languageCol
       <div>
         <label htmlFor="tier-filter">Tier: </label>
         <select id="tier-filter" onChange={(e) => setTierFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}>
-          <option value="all">All</option>
+          <option key="all" value="all">All</option>
           {uniqueTiers.map(tier => (
             <option key={tier} value={tier}>{tier}</option>
           ))}
         </select>
       </div>
-      <ul>
+      <ul style={{ maxHeight: '400px', overflowY: 'auto', listStyle: 'none', padding: 0 }}>
         {filteredVocabulary.map((word, index) => (
-          <li key={index} style={{ backgroundColor: languageColor[theme].background, color: languageColor[theme].text }}>
-            <strong>{word.text}</strong> ({word.status}, Tier: {word.tier}): {word.definition}
-            <button onClick={() => onRemoveWord(word)}>Remove</button>
+          <li 
+            key={index} 
+            style={{ 
+              marginBottom: '10px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              display: 'flex',
+              alignItems: 'stretch', // Stretch items to fill height
+              padding: '0', // Remove padding from li, add to inner div
+              overflow: 'hidden', // Ensure border-radius applies correctly
+              wordWrap: 'break-word'
+            }}
+          >
+            <div style={{
+                flexGrow: 1,
+                width: 'calc(5/6 * 100%)', // Approximately 5/6 width
+                padding: '15px', // Restore padding here
+                backgroundColor: word.status === 'known' ? '#D4EDDA' : '#FFE0B2', // Apply status color here
+                color: '#333333',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}>
+              <div style={{ marginBottom: '5px' }}>
+                <strong>{word.text}</strong> ({word.status}, Tier: {word.tier})
+              </div>
+              <div style={{ fontSize: '0.9em', color: languageColor?.[theme]?.text || 'black' }}>
+                {word.definition}
+              </div>
+            </div>
+            <button 
+              onClick={() => onRemoveWord(word)}
+              style={{
+                width: 'calc(1/6 * 100%)', // Approximately 1/6 width
+                backgroundColor: '#FF4D4D', // Red background
+                color: 'white', // White 'X'
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '2em', // Big 'X'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0, // Prevent shrinking
+                padding: '0' // Remove button padding
+              }}
+            >
+              &times;
+            </button>
           </li>
         ))}
       </ul>

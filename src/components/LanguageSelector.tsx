@@ -76,7 +76,7 @@ const LanguageSelector: React.FC<Props> = ({ onLanguageChange }) => {
       <label htmlFor="language-select">Learning Language: </label>
       <select id="language-select" onChange={(e) => onLanguageChange(e.target.value)}>
         {languages.map((lang) => (
-          <option key={lang} value={lang}>
+          <option key={lang.code} value={lang.code}>
             {lang.name}
           </option>
         ))}

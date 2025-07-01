@@ -42,7 +42,7 @@ const ReadingView: React.FC<Props> = ({ book, onWordUpdate, fontSize, vocabulary
               const cleanedWord = word.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, "");
               const vocabWord = vocabulary.find(w => w.text === cleanedWord);
               const wordClass = vocabWord ? `word ${vocabWord.status}-word` : 'word';
-              const wordStyle = vocabWord ? { backgroundColor: languageColor[theme].background, color: languageColor[theme].text } : {};
+              const wordStyle = vocabWord ? { backgroundColor: languageColor?.[theme]?.background || 'white', color: languageColor?.[theme]?.text || 'black' } : {};
 
               return (
                 <span key={wordIndex} onClick={() => handleWordClick(word)} className={wordClass} style={wordStyle}>

@@ -81,11 +81,16 @@ const App = () => {
     return savedBooks ? JSON.parse(savedBooks) : [];
   });
   const [currentBookId, setCurrentBookId] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [vocabulary, setVocabulary] = useState<Vocabulary>(() => {
     const savedVocabulary = localStorage.getItem('vocabulary');
-    return savedVocabulary ? JSON.parse(savedVocabulary) : {};
+    const initialVocabulary = savedVocabulary ? JSON.parse(savedVocabulary) : {};
+    // Ensure that the vocabulary for the initial selected language exists
+    if (!initialVocabulary[selectedLanguage]) {
+      initialVocabulary[selectedLanguage] = [];
+    }
+    return initialVocabulary;
   });
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [wordLists, setWordLists] = useState<{[key: string]: Word[]}>({});
   const [currentPage, setCurrentPage] = useState(0);
@@ -151,18 +156,18 @@ const App = () => {
     if (!cleanedWordText) return;
 
     setVocabulary((prev) => {
-      const langVocab = prev[selectedLanguage] || [];
-      const existingWordIndex = langVocab.findIndex((w) => w.text === cleanedWordText);
+      const currentLangVocab = prev[selectedLanguage] || [];
+      const existingWordIndex = currentLangVocab.findIndex((w) => w.text === cleanedWordText);
 
       if (existingWordIndex !== -1) {
-        const updatedWord = { ...langVocab[existingWordIndex] };
+        const updatedWord = { ...currentLangVocab[existingWordIndex] };
         if (updatedWord.status === 'learning') {
           updatedWord.status = 'known';
         } else if (updatedWord.status === 'known') {
           // If already known, do nothing
           return prev;
         }
-        const newLangVocab = [...langVocab];
+        const newLangVocab = [...currentLangVocab];
         newLangVocab[existingWordIndex] = updatedWord;
         return { ...prev, [selectedLanguage]: newLangVocab };
       } else {
@@ -174,7 +179,7 @@ const App = () => {
           tier: wordFromList?.tier || 0,
           definition: wordFromList?.definition || 'No definition found.',
         };
-        return { ...prev, [selectedLanguage]: [...langVocab, newWord] };
+        return { ...prev, [selectedLanguage]: [...currentLangVocab, newWord] };
       }
     });
   };
